@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Live User Tracker
  * Description: Tracks the current live users on the website and provides visitor statistics.
- * Version: 1.1.0
+ * Version: 1.2.0
  * Author: Mushfikur Rahman
  */
 
@@ -21,6 +21,7 @@ class LiveUserTracker {
         add_action('shutdown', [$this, 'end_session']);
         add_action('admin_menu', [$this, 'register_settings_page']);
         add_action('admin_bar_menu', [$this, 'add_admin_bar_item'], 100);
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_admin_styles']);
     }
 
     public function start_session() {
@@ -102,12 +103,14 @@ class LiveUserTracker {
 
     public function dashboard_widget_content() {
         $live_users = $this->get_live_user_count();
-        echo '<p><strong>Current Live Users:</strong> ' . $live_users . '</p>';
-
         $statistics = $this->get_statistics();
+
+        echo '<div class="lut-widget">';
+        echo '<p><strong>Current Live Users:</strong> ' . $live_users . '</p>';
         echo '<p><strong>Total Visitors:</strong> ' . $statistics['total_visitors'] . '</p>';
         echo '<p><strong>Last 7 Days Visitors:</strong> ' . $statistics['last_7_days'] . '</p>';
         echo '<p><strong>Last 30 Days Visitors:</strong> ' . $statistics['last_30_days'] . '</p>';
+        echo '</div>';
     }
 
     public function add_admin_bar_item($wp_admin_bar) {
@@ -140,7 +143,7 @@ class LiveUserTracker {
     public function settings_page_content() {
         $statistics = $this->get_statistics();
         ?>
-        <div class="wrap">
+        <div class="wrap lut-settings">
             <h1>Live User Tracker Settings</h1>
             <form method="post" action="options.php">
                 <?php settings_fields('live_user_tracker'); ?>
@@ -159,11 +162,23 @@ class LiveUserTracker {
             </form>
 
             <h2>Visitor Statistics</h2>
-            <p><strong>Total Visitors:</strong> <?php echo $statistics['total_visitors']; ?></p>
-            <p><strong>Last 7 Days Visitors:</strong> <?php echo $statistics['last_7_days']; ?></p>
-            <p><strong>Last 30 Days Visitors:</strong> <?php echo $statistics['last_30_days']; ?></p>
+            <div class="lut-statistics">
+                <p><strong>Total Visitors:</strong> <?php echo $statistics['total_visitors']; ?></p>
+                <p><strong>Last 7 Days Visitors:</strong> <?php echo $statistics['last_7_days']; ?></p>
+                <p><strong>Last 30 Days Visitors:</strong> <?php echo $statistics['last_30_days']; ?></p>
+            </div>
+
+            <div class="lut-advertisement">
+                <h3>Advertisement</h3>
+                <p>Check out our premium plugins for advanced analytics and reporting!</p>
+                <a href="https://example.com/premium-plugins" class="button button-primary" target="_blank">Learn More</a>
+            </div>
         </div>
         <?php
+    }
+
+    public function enqueue_admin_styles() {
+        wp_enqueue_style('live-user-tracker-admin', plugin_dir_url(__FILE__) . 'admin-style.css');
     }
 
     public function end_session() {
@@ -174,3 +189,5 @@ class LiveUserTracker {
 }
 
 new LiveUserTracker();
+
+
