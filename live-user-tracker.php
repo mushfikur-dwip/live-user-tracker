@@ -168,11 +168,11 @@ class LiveUserTracker {
                 <p><strong>Last 30 Days Visitors:</strong> <?php echo $statistics['last_30_days']; ?></p>
             </div>
 
-            <div class="lut-advertisement">
+            <!-- <div class="lut-advertisement">
                 <h3>Advertisement</h3>
                 <p>Check out our premium plugins for advanced analytics and reporting!</p>
-                <a href="https://example.com/premium-plugins" class="button button-primary" target="_blank">Learn More</a>
-            </div>
+                <a href="#" class="button button-primary" target="_blank">Learn More</a>
+            </div> -->
         </div>
         <?php
     }
